@@ -1,0 +1,57 @@
+{
+    "weather": {
+        "minutely": [{
+            "station": {
+                "longitude": "127.1164",
+                "latitude": "37.2772",
+                "name": "기흥구",
+                "id": "371",
+                "type": "KMA"
+            },
+            "wind": {
+                "wdir": "189.50",
+                "wspd": "2.20"
+            },
+            "precipitation": {
+                "sinceOntime": "0.00",
+                "type": "0"
+            },
+            "sky": {
+                "code": "SKY_A07",
+                "name": "흐림"
+            },
+            "rain": {
+                "sinceOntime": "0.00",
+                "sinceMidnight": "",
+                "last10min": "0.00",
+                "last15min": "0.00",
+                "last30min": "0.00",
+                "last1hour": "0.00",
+                "last6hour": "0.50",
+                "last12hour": "0.50",
+                "last24hour": "0.50"
+            },
+            "temperature": {
+                "tc": "5.90",
+                "tmax": "7.00",
+                "tmin": "-1.00"
+            },
+            "humidity": "",
+            "pressure": {
+                "surface": "",
+                "seaLevel": ""
+            },
+            "lightning": "0",
+            "timeObservation": "2018-12-06 14:14:00"
+        }]
+    },
+    "common": {
+        "alertYn": "Y",
+        "stormYn": "N"
+    },
+    "result": {
+        "code": 9200,
+        "requestUrl": "/weather/current/minutely?appKey=key&lat=37.239795&lon=127.083240",
+        "message": "성공"
+    }
+}
