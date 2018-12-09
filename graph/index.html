@@ -8,38 +8,38 @@
     <style type="text/css"></style>
   </head>
   <body>
-    <script src="../../code/highcharts.js"></script>
-    <script src="../../code/modules/exporting.js"></script>
-    <script src="../../code/modules/export-data.js"></script>
+    <script src="../code/highcharts.js"></script>
+    <script src="../code/modules/exporting.js"></script>
+    <script src="../code/modules/export-data.js"></script>
 
     <div
       id="container1"
       style="width:1260px; height: 400px; margin: 0 auto"
     ></div>
 
-<div style="width:1275px;  margin:0 auto;">
-    <div style="display: inline-block;">
+    <div style="width:1275px;  margin:0 auto;">
+      <div style="display: inline-block;">
         <div
           id="container2"
           style="width:400px; height: 300px; padding:0; margin-left:0px;margin-right: 30px;"
         ></div>
       </div>
       <div style="display: inline-block;">
-          <div
-            id="container3"
-            style="width:400px; height: 300px; padding:0; margin-left:0px;margin-right: 30px;"
-          ></div>
-        </div>
-  
-        <div style="display: inline-block;">
-          <div
-            id="container4"
-            style="width:400px; height: 300px; padding:0; margin-left:0px;"
-          ></div>
-        </div>
-  
-</div>    
+        <div
+          id="container3"
+          style="width:400px; height: 300px; padding:0; margin-left:0px;margin-right: 30px;"
+        ></div>
+      </div>
 
+      <div style="display: inline-block;">
+        <div
+          id="container4"
+          style="width:400px; height: 300px; padding:0; margin-left:0px;"
+        ></div>
+      </div>
+    </div>
+
+    <!--첫번째 그래프-->
     <script type="text/javascript">
       Highcharts.chart("container1", {
         chart: {
@@ -52,13 +52,13 @@
               var series = this.series[0];
               setInterval(function() {
                 var x = new Date().getTime(), // 현재 시간
-                  y = 0.7 //여기에 새로 넣을 값
+                  y = 0.7; //여기에 새로 넣을 값
                 series.addPoint([x, y], true, true);
               }, 1000); //1000=1초 -> 1분=60000
             }
           }
         },
-        
+
         time: {
           useUTC: false
         },
@@ -104,14 +104,14 @@
         },
         series: [
           {
-            name: "사망률(%)",
+            name: "사망률",
             data: (function() {
               // generate an array of random data
               var data = [],
                 time = new Date().getTime(),
                 i;
 
-              for (i = -19; i <= 0; i += 1) {
+                for (i = -9; i <= 0; i += 1) {
                 data.push({
                   x: time + i * 1000,
                   y: 0
@@ -122,7 +122,10 @@
           }
         ]
       });
+    </script>
 
+    <!--두번째 그래프-->
+    <script type="text/javascript">
       Highcharts.chart("container2", {
         chart: {
           type: "spline",
@@ -146,7 +149,7 @@
         },
 
         title: {
-          text: "실시간 사망률"
+          text: "기온"
         },
         xAxis: {
           type: "datetime",
@@ -186,7 +189,7 @@
         },
         series: [
           {
-            name: "사망률(%)",
+            name: "기온",
             data: (function() {
               // generate an array of random data
               var data = [],
@@ -204,7 +207,10 @@
           }
         ]
       });
+    </script>
 
+    <!--세번째 그래프-->
+    <script type="text/javascript">
       Highcharts.chart("container3", {
         chart: {
           type: "spline",
@@ -228,7 +234,7 @@
         },
 
         title: {
-          text: "실시간 사망률"
+          text: "풍속"
         },
         xAxis: {
           type: "datetime",
@@ -268,7 +274,7 @@
         },
         series: [
           {
-            name: "사망률(%)",
+            name: "풍속",
             data: (function() {
               // generate an array of random data
               var data = [],
@@ -286,7 +292,10 @@
           }
         ]
       });
+    </script>
 
+    <!--네번째 그래프-->
+    <script type="text/javascript">
       Highcharts.chart("container4", {
         chart: {
           type: "spline",
@@ -310,7 +319,7 @@
         },
 
         title: {
-          text: "실시간 사망률"
+          text: "강수량"
         },
         xAxis: {
           type: "datetime",
@@ -350,7 +359,7 @@
         },
         series: [
           {
-            name: "사망률(%)",
+            name: "강수량",
             data: (function() {
               // generate an array of random data
               var data = [],
@@ -368,7 +377,6 @@
           }
         ]
       });
-
     </script>
   </body>
 </html>
