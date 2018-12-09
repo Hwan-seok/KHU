@@ -148,7 +148,8 @@
         "requestUrl": "/weather/index/th?appKey=c13b1a68-ef31-4131-a1b7-4069c263f82d&version=1&lat=37.239795&lon=127.083240",
         "message": "성공"
     }
-}{
+}
+{
     "weather": {
         "wIndex": {
             "heatIndex": [
