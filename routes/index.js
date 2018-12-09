@@ -17,7 +17,7 @@ router.get('/', function(req, res, next) {
   var dataLen = 0; // 데이터 개수
   var empty = 0; // 초기값 유뮤, 0 : 자료 있음, 1 : 자료 없음
   var sql = ""; // 쿼리
-  var index;
+  var index = 0;
 
   // 이전 10분간 데이터 찾기
   sql = "SELECT * FROM weatherInfo WHERE time >= DATE_FORMAT(DATE_ADD(now(), INTERVAL -10 MINUTE), '%Y-%m-%d %H:%i:%s')";
@@ -28,16 +28,16 @@ router.get('/', function(req, res, next) {
     if (rows.length == 0) {
       empty = 1;
     } else {
-      dataLen = rows.length;
-      for (index = 0; index < rows.length; index++){
-        var temp = rows[index].time.getMinutesBetween(newDate);
+      for (var i = rows.length - 1; i >= 0; i--){
+        var temp = rows[i].time.getMinutesBetween(newDate);
 
         if(temp == index){
-          probArr.push(rows[index].prob);
-          time.push(rows[index].time);
-          ptArr.push(rows[index].temperature);
-          wsArr.push(rows[index].wind);
-          rainArr.push(rows[index].rain);
+          probArr.unshift(rows[i].prob);
+          time.unshift(rows[i].time);
+          ptArr.unshift(rows[i].temperature);
+          wsArr.unshift(rows[i].wind);
+          rainArr.unshift(rows[i].rain);
+          index = index + 1;
         }
         else {
           empty = 1;
@@ -49,6 +49,7 @@ router.get('/', function(req, res, next) {
         empty = 0;
       }
 
+      dataLen = probArr.length;
       res.render('index', {
         empty,
         time,
