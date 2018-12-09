@@ -39,6 +39,15 @@
       </div>
     </div>
 
+    <script src="/socket.io/socket.io.js"></script>
+    <script>
+        var socket = io.connect('/');
+        socket.emit("connection");
+        socket.on("weatherInfo_minutely_send_to_cliend",(info)=>{  //서버에서 client에게 메세지 전송
+            console.log(info);
+        });
+    </script>
+
     <!-- 첫번째 그래프 -->
     <script type="text/javascript">
       Highcharts.chart("container1", {
@@ -52,7 +61,7 @@
               var series = this.series[0];
               setInterval(function() {
                 var x = new Date().getTime(), // 현재 시간
-                  y = 0.7; //여기에 새로 넣을 값
+                    y = 0; //여기에 새로 넣을 값
                 series.addPoint([x, y], true, true);
               }, 60000); //1000=1초 -> 1분=60000
             }
@@ -130,7 +139,7 @@
                   x: time + i * 60000,
                   y: temp
                 }) 
-                j++;
+                i++;
                 }
               <%})%>
 
@@ -154,7 +163,7 @@
               var series = this.series[0];
               setInterval(function() {
                 var x = new Date().getTime(), // 현재 시간
-                  y = Math.random(); //
+                  y = 0; //
                 series.addPoint([x, y], true, true);
               }, 60000); //1000=1초
             }
@@ -232,7 +241,7 @@
                   x: time + i * 60000,
                   y: temp
                 }) 
-                j++;
+                i++;
                 }
               <%})%>
 
@@ -256,7 +265,7 @@
               var series = this.series[0];
               setInterval(function() {
                 var x = new Date().getTime(), // 현재 시간
-                  y = Math.random(); //
+                  y = 0; //
                 series.addPoint([x, y], true, true);
               }, 60000); //1000=1초
             }
@@ -334,7 +343,7 @@
                   x: time + i * 60000,
                   y: temp
                 }) 
-                j++;
+                i++;
                 }
               <%})%>
 
@@ -358,7 +367,7 @@
               var series = this.series[0];
               setInterval(function() {
                 var x = new Date().getTime(), // 현재 시간
-                  y = Math.random(); //
+                  y = 0; //
                 series.addPoint([x, y], true, true);
               }, 60000); //1000=1초
             }
@@ -436,7 +445,7 @@
                   x: time + i * 60000,
                   y: temp
                 }) 
-                j++;
+                i++;
                 }
               <%})%>
 
