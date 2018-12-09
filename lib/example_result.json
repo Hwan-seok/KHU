@@ -1,49 +1,51 @@
 {
     "weather": {
-        "minutely": [{
-            "station": {
-                "longitude": "127.1164",
-                "latitude": "37.2772",
-                "name": "기흥구",
-                "id": "371",
-                "type": "KMA"
-            },
-            "wind": {
-                "wdir": "189.50",
-                "wspd": "2.20"
-            },
-            "precipitation": {
-                "sinceOntime": "0.00",
-                "type": "0"
-            },
-            "sky": {
-                "code": "SKY_A07",
-                "name": "흐림"
-            },
-            "rain": {
-                "sinceOntime": "0.00",
-                "sinceMidnight": "",
-                "last10min": "0.00",
-                "last15min": "0.00",
-                "last30min": "0.00",
-                "last1hour": "0.00",
-                "last6hour": "0.50",
-                "last12hour": "0.50",
-                "last24hour": "0.50"
-            },
-            "temperature": {
-                "tc": "5.90",
-                "tmax": "7.00",
-                "tmin": "-1.00"
-            },
-            "humidity": "",
-            "pressure": {
-                "surface": "",
-                "seaLevel": ""
-            },
-            "lightning": "0",
-            "timeObservation": "2018-12-06 14:14:00"
-        }]
+        "minutely": [
+            {
+                "station": {
+                    "longitude": "127.1164",
+                    "latitude": "37.2772",
+                    "name": "기흥구",
+                    "id": "371",
+                    "type": "KMA"
+                },
+                "wind": {
+                    "wdir": "189.50",
+                    "wspd": "2.20"
+                },
+                "precipitation": {
+                    "sinceOntime": "0.00",
+                    "type": "0"
+                },
+                "sky": {
+                    "code": "SKY_A07",
+                    "name": "흐림"
+                },
+                "rain": {
+                    "sinceOntime": "0.00",
+                    "sinceMidnight": "",
+                    "last10min": "0.00",
+                    "last15min": "0.00",
+                    "last30min": "0.00",
+                    "last1hour": "0.00",
+                    "last6hour": "0.50",
+                    "last12hour": "0.50",
+                    "last24hour": "0.50"
+                },
+                "temperature": {
+                    "tc": "5.90",
+                    "tmax": "7.00",
+                    "tmin": "-1.00"
+                },
+                "humidity": "",
+                "pressure": {
+                    "surface": "",
+                    "seaLevel": ""
+                },
+                "lightning": "0",
+                "timeObservation": "2018-12-06 14:14:00"
+            }
+        ]
     },
     "common": {
         "alertYn": "Y",
@@ -52,6 +54,203 @@
     "result": {
         "code": 9200,
         "requestUrl": "/weather/current/minutely?appKey=key&lat=37.239795&lon=127.083240",
+        "message": "성공"
+    }
+},
+{
+    "weather": {
+        "wIndex": {
+            "uvindex": [
+                {
+                    "grid": {
+                        "city": "경기도",
+                        "county": "수원시",
+                        "village": ""
+                    },
+                    "day00": {
+                        "imageUrl": "http://files.weatherplanet.co.kr/weather/01_FCT/INDEX1/20181209/FCT_IDX_A07_1_2018120906_00D.gif",
+                        "index": "20.00",
+                        "comment": "자외선 걱정 없어요"
+                    },
+                    "day01": {
+                        "imageUrl": "http://files.weatherplanet.co.kr/weather/01_FCT/INDEX1/20181209/FCT_IDX_A07_1_2018120906_01D.gif",
+                        "index": "20.00",
+                        "comment": "자외선 걱정 없어요"
+                    },
+                    "day02": {
+                        "imageUrl": "http://files.weatherplanet.co.kr/weather/01_FCT/INDEX1/20181209/FCT_IDX_A07_1_2018120906_02D.gif",
+                        "index": "10.00",
+                        "comment": "자외선 없는 날입니다"
+                    }
+                }
+            ],
+            "timeRelease": "2018-12-09 06:00:00"
+        }
+    },
+    "common": {
+        "alertYn": "Y",
+        "stormYn": "N"
+    },
+    "result": {
+        "code": 9200,
+        "requestUrl": "/weather/index/uv?appKey=c13b1a68-ef31-4131-a1b7-4069c263f82d&version=1&lat=37.239795&lon=127.083240",
+        "message": "성공"
+    }
+}{
+    "weather": {
+        "wIndex": {
+            "thIndex": [
+                {
+                    "grid": {
+                        "city": "경기",
+                        "county": "용인시 기흥구",
+                        "village": "상갈동"
+                    },
+                    "forecast": {
+                        "timeRelease": "2018-12-09 14:00:00",
+                        "index43hour": "37.85",
+                        "index4hour": "38.40",
+                        "index7hour": "34.36",
+                        "index10hour": "31.08",
+                        "index13hour": "31.08",
+                        "index16hour": "27.60",
+                        "index19hour": "35.76",
+                        "index22hour": "44.84",
+                        "index25hour": "47.47",
+                        "index28hour": "42.45",
+                        "index31hour": "39.37",
+                        "index34hour": "37.85",
+                        "index37hour": "36.54",
+                        "index40hour": "35.73",
+                        "index46hour": "42.99",
+                        "index49hour": "39.12",
+                        "index52hour": "37.79",
+                        "index55hour": "37.13",
+                        "index58hour": "36.29",
+                        "index61hour": "",
+                        "index64hour": "",
+                        "index67hour": ""
+                    },
+                    "current": {
+                        "timeRelease": "2018-12-09 14:00:00",
+                        "index": "40.49"
+                    }
+                }
+            ]
+        }
+    },
+    "common": {
+        "alertYn": "Y",
+        "stormYn": "N"
+    },
+    "result": {
+        "code": 9200,
+        "requestUrl": "/weather/index/th?appKey=c13b1a68-ef31-4131-a1b7-4069c263f82d&version=1&lat=37.239795&lon=127.083240",
+        "message": "성공"
+    }
+}{
+    "weather": {
+        "wIndex": {
+            "heatIndex": [
+                {
+                    "grid": {
+                        "city": "경기",
+                        "county": "용인시 기흥구",
+                        "village": "상갈동"
+                    },
+                    "forecast": {
+                        "timeRelease": "2018-12-09 14:00:00",
+                        "index4hour": "37.28",
+                        "index7hour": "70.81",
+                        "index10hour": "91.57",
+                        "index13hour": "91.57",
+                        "index16hour": "110.30",
+                        "index19hour": "71.89",
+                        "index22hour": "36.40",
+                        "index25hour": "27.82",
+                        "index28hour": "50.39",
+                        "index31hour": "61.62",
+                        "index34hour": "71.05",
+                        "index37hour": "75.20",
+                        "index40hour": "79.01",
+                        "index43hour": "71.05",
+                        "index46hour": "52.61",
+                        "index49hour": "67.96",
+                        "index52hour": "69.50",
+                        "index55hour": "69.08",
+                        "index58hour": "74.43",
+                        "index61hour": "",
+                        "index64hour": "",
+                        "index67hour": ""
+                    },
+                    "current": {
+                        "timeRelease": "2018-12-09 14:00:00",
+                        "index": "32.79"
+                    }
+                }
+            ]
+        }
+    },
+    "common": {
+        "alertYn": "Y",
+        "stormYn": "N"
+    },
+    "result": {
+        "code": 9200,
+        "requestUrl": "/weather/index/heat?appKey=c13b1a68-ef31-4131-a1b7-4069c263f82d&version=1&lat=37.239795&lon=127.083240",
+        "message": "성공"
+    }
+}
+{
+    "weather": {
+        "wIndex": {
+            "wctIndex": [
+                {
+                    "grid": {
+                        "city": "경기",
+                        "county": "용인시 기흥구",
+                        "village": "상갈동"
+                    },
+                    "forecast": {
+                        "timeRelease": "2018-12-09 14:00:00",
+                        "index43hour": "-2.17",
+                        "index4hour": "-8.15",
+                        "index7hour": "-6.55",
+                        "index10hour": "-7.00",
+                        "index13hour": "-7.63",
+                        "index16hour": "-9.08",
+                        "index19hour": "-4.71",
+                        "index22hour": "1.18",
+                        "index25hour": "1.53",
+                        "index28hour": "-0.47",
+                        "index31hour": "-3.76",
+                        "index34hour": "-2.37",
+                        "index37hour": "-4.67",
+                        "index40hour": "-4.38",
+                        "index46hour": "-0.67",
+                        "index49hour": "-1.18",
+                        "index52hour": "-2.14",
+                        "index55hour": "-1.65",
+                        "index58hour": "-4.23",
+                        "index61hour": "",
+                        "index64hour": "",
+                        "index67hour": ""
+                    },
+                    "current": {
+                        "timeRelease": "2018-12-09 14:00:00",
+                        "index": "-6.22"
+                    }
+                }
+            ]
+        }
+    },
+    "common": {
+        "alertYn": "Y",
+        "stormYn": "N"
+    },
+    "result": {
+        "code": 9200,
+        "requestUrl": "/weather/index/wct?appKey=c13b1a68-ef31-4131-a1b7-4069c263f82d&version=1&lat=37.239795&lon=127.083240",
         "message": "성공"
     }
 }
