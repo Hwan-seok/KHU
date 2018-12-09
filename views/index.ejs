@@ -110,24 +110,27 @@
                   time = new Date().getTime();
               var length= <%=dataLen%>;
               var i=-9;
-              for(i;i<-9+length;i++)
+              var j=0;
+              for(j;j<10-length;j++)
               {
                 deathArr.push({
                  x: time + i * 60000,
                  y: 0
               }) 
+              i++;
               }
 
               <%probArr.forEach((probArr)=>{%>
                 temp;
                 temp= <%=probArr%>;
                 
-                for(i+1;i<=0;i++)
+                for(j;j<10;j++)
                 {
                   deathArr.push({
                   x: time + i * 60000,
                   y: temp
                 }) 
+                j++;
                 }
               <%})%>
 
@@ -153,7 +156,7 @@
                 var x = new Date().getTime(), // 현재 시간
                   y = Math.random(); //
                 series.addPoint([x, y], true, true);
-              }, 3000); //1000=1초
+              }, 60000); //1000=1초
             }
           }
         },
@@ -205,18 +208,35 @@
           {
             name: "기온",
             data: (function() {
-              // generate an array of random data
-              var data = [],
-                time = new Date().getTime(),
-                i;
-
-              for (i = -19; i <= 0; i += 1) {
-                data.push({
-                  x: time + i * 3000,
-                  y: 0
-                });
+              var tempArr = [],
+                  time = new Date().getTime();
+              var length= <%=dataLen%>;
+              var i=-9;
+              var j=0;
+              for(j;j<10-length;j++)
+              {
+                tempArr.push({
+                 x: time + i * 60000,
+                 y: 0
+              }) 
+              i++;
               }
-              return data;
+
+              <%ptArr.forEach((ptArr)=>{%>
+                temp;
+                temp= <%=ptArr%>;
+                
+                for(j;j<10;j++)
+                {
+                  tempArr.push({
+                  x: time + i * 60000,
+                  y: temp
+                }) 
+                j++;
+                }
+              <%})%>
+
+              return tempArr;
             })()
           }
         ]
@@ -238,7 +258,7 @@
                 var x = new Date().getTime(), // 현재 시간
                   y = Math.random(); //
                 series.addPoint([x, y], true, true);
-              }, 3000); //1000=1초
+              }, 60000); //1000=1초
             }
           }
         },
@@ -290,22 +310,39 @@
           {
             name: "풍속",
             data: (function() {
-              // generate an array of random data
-              var data = [],
-                time = new Date().getTime(),
-                i;
-
-              for (i = -19; i <= 0; i += 1) {
-                data.push({
-                  x: time + i * 3000,
-                  y: 0
-                });
+              var windArr = [],
+                  time = new Date().getTime();
+              var length= <%=dataLen%>;
+              var i=-9;
+              var j=0;
+              for(j;j<10-length;j++)
+              {
+                windArr.push({
+                 x: time + i * 60000,
+                 y: 0
+              }) 
+              i++;
               }
-              return data;
+
+              <%wsArr.forEach((wsArr)=>{%>
+                temp;
+                temp= <%=wsArr%>;
+                
+                for(j;j<10;j++)
+                {
+                  windArr.push({
+                  x: time + i * 60000,
+                  y: temp
+                }) 
+                j++;
+                }
+              <%})%>
+
+              return windArr;
             })()
           }
-        ]
-      });
+        ]      
+        });
     </script>
 
     <!-- 네번째 그래프 -->
@@ -323,7 +360,7 @@
                 var x = new Date().getTime(), // 현재 시간
                   y = Math.random(); //
                 series.addPoint([x, y], true, true);
-              }, 3000); //1000=1초
+              }, 60000); //1000=1초
             }
           }
         },
@@ -375,21 +412,38 @@
           {
             name: "강수량",
             data: (function() {
-              // generate an array of random data
-              var data = [],
-                time = new Date().getTime(),
-                i;
-
-              for (i = -19; i <= 0; i += 1) {
-                data.push({
-                  x: time + i * 3000,
-                  y: 0
-                });
+              var rainArr = [],
+                  time = new Date().getTime();
+              var length= <%=dataLen%>;
+              var i=-9;
+              var j=0;
+              for(j;j<10-length;j++)
+              {
+                rainArr.push({
+                 x: time + i * 60000,
+                 y: 0
+              }) 
+              i++;
               }
-              return data;
+
+              <%rainArr.forEach((rainArr)=>{%>
+                temp;
+                temp= <%=rainArr%>;
+                
+                for(j;j<10;j++)
+                {
+                  rainArr.push({
+                  x: time + i * 60000,
+                  y: temp
+                }) 
+                j++;
+                }
+              <%})%>
+
+              return rainArr;
             })()
           }
-        ]
+        ]      
       });
     </script>
   </body>
