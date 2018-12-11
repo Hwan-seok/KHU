@@ -38,20 +38,7 @@
         ></div>
       </div>
     </div>
-<<<<<<< HEAD
-
-    <script src="/socket.io/socket.io.js"></script>
-    <script>
-        var socket = io.connect('/');
-        socket.emit("connection");
-        socket.on("weatherInfo_minutely_send_to_cliend",(info)=>{  //서버에서 client에게 메세지 전송
-            console.log(info);
-        });
-    </script>
-
-=======
     
->>>>>>> 0f5edf6316e2444f5fd2a050fed5e771e5141733
     <!-- 첫번째 그래프 -->
     <script type="text/javascript">
       Highcharts.chart("container1", {
@@ -134,7 +121,7 @@
               }
 
               <%probArr.forEach((probArr)=>{%>
-                temp;
+                var temp;
                 temp= <%=probArr%>;
                 
                 for(j;j<10;j++)
@@ -236,7 +223,7 @@
               }
 
               <%ptArr.forEach((ptArr)=>{%>
-                temp;
+                var temp;
                 temp= <%=ptArr%>;
                 
                 for(j;j<10;j++)
@@ -338,7 +325,7 @@
               }
 
               <%wsArr.forEach((wsArr)=>{%>
-                temp;
+                var temp;
                 temp= <%=wsArr%>;
                 
                 for(j;j<10;j++)
@@ -440,7 +427,7 @@
               }
 
               <%rainArr.forEach((rainArr)=>{%>
-                temp;
+                var temp;
                 temp= <%=rainArr%>;
                 
                 for(j;j<10;j++)
