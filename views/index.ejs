@@ -31,30 +31,37 @@
 
 
   <script src="/socket.io/socket.io.js"></script>
-  <script type="text/javascript">
+  <script>
     var socket = io.connect('/', { transports: ['websocket'], upgrade: false });
     socket.emit("connection", "client in");
     socket.on("weatherInfo_minutely_send_to_client", (info) => {  //서버에서 client에게 메세지 전송
       console.log(info);
+      
+      var date = new Date().getTime();
 
+      chart1.series.data.push({
+        x: date,
+        y: info.death
+      })
     });
-
+    </script>
+    <script type="text/javascript">
     var chart1 = Highcharts.chart("container1", {
       chart: {
         type: "areaspline",
         animation: Highcharts.svg, // don't animate in old IE
         marginRight: 10,
-        events: {
-          load: function () {
-            // set up the updating of the chart each second
-            var series = this.series[0];
-            setInterval(function () {
-              var x = new Date().getTime(), // 현재 시간
-                y = 0; //여기에 새로 넣을 값
-              series.addPoint([x, y], true, true);
-            }, 60000); //1000=1초 -> 1분=60000
-          }
-        }
+        // events: {
+        //   load: function () {
+        //     // set up the updating of the chart each second
+        //     var series = this.series[0];
+        //     setInterval(function () {
+        //       var x = new Date().getTime(), // 현재 시간
+        //         y = 0; //여기에 새로 넣을 값
+        //       series.addPoint([x, y], true, true);
+        //     }, 60000); //1000=1초 -> 1분=60000
+        //   }
+        // }
       },
 
       time: {
