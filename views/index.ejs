@@ -38,22 +38,16 @@
         ></div>
       </div>
     </div>
-<<<<<<< HEAD
-=======
 
-    <script src="/socket.io/socket.io.js"></script>
-    <script>
-        var socket = io('http://localhost',{transports: ['websocket']});
-        socket.emit("connection",()=>{
-          console.log("connected");
-        });
-        socket.on("weatherInfo_minutely_send_to_client",(info)=>{  //서버에서 client에게 메세지 전송
-            console.log(info);
-        });
-    </script>
-
->>>>>>> last_socket_hotfix
     
+<script src="/socket.io/socket.io.js"></script>
+<script>
+  var socket = io.connect('/',{transports: ['websocket'],upgrade:false});
+  socket.emit("connection","client in");
+  socket.on("weatherInfo_minutely_send_to_client",(info)=>{  //서버에서 client에게 메세지 전송
+        console.log(info);
+    });
+</script>
     <!-- 첫번째 그래프 -->
     <script type="text/javascript">
       Highcharts.chart("container1", {
