@@ -3,8 +3,12 @@ var router = express.Router();
 var db = require('../lib/db');
 
 /* GET home page. */
-router.get('/', function(req, res, next) {
 
+router.post('/starting' , (req,res) => {
+  res.redirect(`/name/${req.body.name}/birth/${req.body.birth}`);
+})
+router.get('/name/:name/birth/:birth', (req,res) => {
+  
   // 렌더링 변수
   var time = new Array(); // 타임스탬프
   var ptArr = new Array(); // 현재 온도
@@ -15,6 +19,8 @@ router.get('/', function(req, res, next) {
   var empty = 0; // 초기값 유뮤, 0 : 자료 있음, 1 : 자료 없음
   var sql = ""; // 쿼리
   var count = 0;
+  const name = req.params.name;
+  const birth = req.params.birth;
 
   // 이전 10분간 데이터 찾기
   sql = "SELECT * FROM weatherInfo WHERE time >= DATE_FORMAT(DATE_ADD(now(), INTERVAL -20 MINUTE), '%Y-%m-%d %H:%i:%s')";
@@ -55,10 +61,15 @@ router.get('/', function(req, res, next) {
         wsArr,
         rainArr,
         probArr,
-        dataLen
+        dataLen,
+        name,
+        birth
       });
     }
   });
+} )
+router.get('/', function(req, res, next) {
+  res.render( 'main' );
 });
 
 module.exports = router;

@@ -42,8 +42,12 @@
     
 <script src="/socket.io/socket.io.js"></script>
 <script>
+  let client_data={
+    birth : "<%=birth%>",
+    name : "<%=name%>"
+  }
   var socket = io.connect('/',{transports: ['websocket'],upgrade:false});
-  socket.emit("connection","client in");
+  socket.emit("connection",client_data);
   socket.on("weatherInfo_minutely_send_to_client",(info)=>{  //서버에서 client에게 메세지 전송
         console.log(info);
     });
@@ -73,7 +77,7 @@
         },
 
         title: {
-          text: "실시간 사망률"
+          text: "<%=name%>님의 실시간 사망률"
         },
         xAxis: {
           type: "datetime",
