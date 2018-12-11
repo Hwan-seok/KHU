@@ -19,22 +19,31 @@ router.get('/', function(req, res, next) {
   // 이전 10분간 데이터 찾기
   sql = "SELECT * FROM weatherInfo WHERE time >= DATE_FORMAT(DATE_ADD(now(), INTERVAL -20 MINUTE), '%Y-%m-%d %H:%i:%s')";
   db.query(sql, function(err, rows, fields){
-  if (err) {
-    console.log(err);
-  } else {
-    if (rows.length == 0) {
-      empty = 1;
-    } else {
-      for (var i = rows.length - 1; i >= 0; i--){
-        probArr.unshift(rows[i].prob);
-        time.unshift(rows[i].time);
-        ptArr.unshift(rows[i].temperature);
-        wsArr.unshift(rows[i].wind);
-        rainArr.unshift(rows[i].rain);
-        count = count + 1;
+    if(err)
+    {
+      console.log(err);
+    }
+    else
+    {
+      if (rows.length == 0)
+      {
+        empty = 1;
+      }
+      else
+      {
+        for(var i = rows.length - 1; i >= 0; i--)
+        {
+          console.log('kk');
+          probArr.unshift(rows[i].prob);
+          time.unshift(rows[i].time);
+          ptArr.unshift(rows[i].temperature);
+          wsArr.unshift(rows[i].wind);
+          rainArr.unshift(rows[i].rain);
+          count = count + 1;
 
-        if (count == 10){
-          break;
+          if (count == 10){
+            break;
+          }
         }
       }
 
@@ -49,8 +58,7 @@ router.get('/', function(req, res, next) {
         dataLen
       });
     }
-  }
-});
+  });
 });
 
 module.exports = router;
