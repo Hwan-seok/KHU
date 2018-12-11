@@ -109,9 +109,9 @@
               var deathArr = [],
                   time = new Date().getTime();
               var length= <%=dataLen%>;
-              var i=-9;
-              var j=0;
-              for(j;j<10-length;j++)
+              var i=-9; //얘는 시간계산용
+              var j=0; //얘는 반복문용
+              for(;j<10-length;j++)
               {
                 deathArr.push({
                  x: time + i * 60000,
@@ -124,14 +124,21 @@
                 var temp;
                 temp= <%=probArr%>;
                 
-                for(j;j<10;j++)
-                {
-                  deathArr.push({
-                  x: time + i * 60000,
-                  y: temp
-                }) 
+                // for(;j<10;j++)
+                // {
+                //   deathArr.push({
+                //   x: time + i * 60000,
+                //   y: temp
+                // }) 
+                // i++;
+                // }
+                
+                deathArr.push({
+                x: time + i * 60000,
+                y: temp
+                })
                 i++;
-                }
+
               <%})%>
 
               return deathArr;
@@ -226,14 +233,21 @@
                 var temp;
                 temp= <%=ptArr%>;
                 
-                for(j;j<10;j++)
-                {
-                  tempArr.push({
-                  x: time + i * 60000,
-                  y: temp
-                }) 
+                // for(j;j<10;j++)
+                // {
+                //   tempArr.push({
+                //   x: time + i * 60000,
+                //   y: temp
+                // }) 
+                // i++;
+                // }
+
+                tempArr.push({
+                x: time + i * 60000,
+                y: temp
+                })
                 i++;
-                }
+
               <%})%>
 
               return tempArr;
@@ -328,14 +342,21 @@
                 var temp;
                 temp= <%=wsArr%>;
                 
-                for(j;j<10;j++)
-                {
-                  windArr.push({
-                  x: time + i * 60000,
-                  y: temp
-                }) 
+                // for(j;j<10;j++)
+                // {
+                //   windArr.push({
+                //   x: time + i * 60000,
+                //   y: temp
+                // }) 
+                // i++;
+                // }
+
+                windArr.push({
+                x: time + i * 60000,
+                y: temp
+                })
                 i++;
-                }
+
               <%})%>
 
               return windArr;
@@ -430,14 +451,21 @@
                 var temp;
                 temp= <%=rainArr%>;
                 
-                for(j;j<10;j++)
-                {
-                  rainArr.push({
-                  x: time + i * 60000,
-                  y: temp
-                }) 
+                // for(j;j<10;j++)
+                // {
+                //   rainArr.push({
+                //   x: time + i * 60000,
+                //   y: temp
+                // }) 
+                // i++;
+                // }
+
+                rainArr.push({
+                x: time + i * 60000,
+                y: temp
+                })
                 i++;
-                }
+
               <%})%>
 
               return rainArr;
