@@ -1,487 +1,464 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Highcharts Example</title>
 
-    <style type="text/css"></style>
-  </head>
-  <body>
-    <script src="highcharts.js"></script>
-    <script src="modules/exporting.js"></script>
-    <script src="modules/export-data.js"></script>
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Highcharts Example</title>
 
-    <div
-      id="container1"
-      style="width:1260px; height: 400px; margin: 0 auto"
-    ></div>
+  <style type="text/css"></style>
+</head>
 
-    <div style="width:1275px;  margin:0 auto;">
-      <div style="display: inline-block;">
-        <div
-          id="container2"
-          style="width:400px; height: 300px; padding:0; margin-left:0px;margin-right: 30px;"
-        ></div>
-      </div>
-      <div style="display: inline-block;">
-        <div
-          id="container3"
-          style="width:400px; height: 300px; padding:0; margin-left:0px;margin-right: 30px;"
-        ></div>
-      </div>
+<body>
+  <script src="highcharts.js"></script>
+  <script src="modules/exporting.js"></script>
+  <script src="modules/export-data.js"></script>
 
-      <div style="display: inline-block;">
-        <div
-          id="container4"
-          style="width:400px; height: 300px; padding:0; margin-left:0px;"
-        ></div>
-      </div>
+  <div id="container1" style="width:1260px; height: 400px; margin: 0 auto"></div>
+
+  <div style="width:1275px;  margin:0 auto;">
+    <div style="display: inline-block;">
+      <div id="container2" style="width:400px; height: 300px; padding:0; margin-left:0px;margin-right: 30px;"></div>
+    </div>
+    <div style="display: inline-block;">
+      <div id="container3" style="width:400px; height: 300px; padding:0; margin-left:0px;margin-right: 30px;"></div>
     </div>
 
-    
-<script src="/socket.io/socket.io.js"></script>
-<script>
-  var socket = io.connect('/',{transports: ['websocket'],upgrade:false});
-  socket.emit("connection","client in");
-  socket.on("weatherInfo_minutely_send_to_client",(info)=>{  //서버에서 client에게 메세지 전송
-        console.log(info);
+    <div style="display: inline-block;">
+      <div id="container4" style="width:400px; height: 300px; padding:0; margin-left:0px;"></div>
+    </div>
+  </div>
+
+
+  <script src="/socket.io/socket.io.js"></script>
+  <script type="text/javascript">
+    var socket = io.connect('/', { transports: ['websocket'], upgrade: false });
+    socket.emit("connection", "client in");
+    socket.on("weatherInfo_minutely_send_to_client", (info) => {  //서버에서 client에게 메세지 전송
+      console.log(info);
+
     });
-</script>
-    <!-- 첫번째 그래프 -->
-    <script type="text/javascript">
-      Highcharts.chart("container1", {
-        chart: {
-          type: "areaspline",
-          animation: Highcharts.svg, // don't animate in old IE
-          marginRight: 10,
-          events: {
-            load: function() {
-              // set up the updating of the chart each second
-              var series = this.series[0];
-              setInterval(function() {
-                var x = new Date().getTime(), // 현재 시간
-                    y = 0; //여기에 새로 넣을 값
-                series.addPoint([x, y], true, true);
-              }, 60000); //1000=1초 -> 1분=60000
-            }
+
+    var chart1 = Highcharts.chart("container1", {
+      chart: {
+        type: "areaspline",
+        animation: Highcharts.svg, // don't animate in old IE
+        marginRight: 10,
+        events: {
+          load: function () {
+            // set up the updating of the chart each second
+            var series = this.series[0];
+            setInterval(function () {
+              var x = new Date().getTime(), // 현재 시간
+                y = 0; //여기에 새로 넣을 값
+              series.addPoint([x, y], true, true);
+            }, 60000); //1000=1초 -> 1분=60000
           }
-        },
+        }
+      },
 
-        time: {
-          useUTC: false
-        },
+      time: {
+        useUTC: false
+      },
 
+      title: {
+        text: "실시간 사망률"
+      },
+      xAxis: {
+        type: "datetime",
+        tickPixelInterval: 150
+      },
+      yAxis: {
         title: {
-          text: "실시간 사망률"
+          text: "Value"
         },
-        xAxis: {
-          type: "datetime",
-          tickPixelInterval: 150
-        },
-        yAxis: {
-          title: {
-            text: "Value"
-          },
-          plotLines: [
-            {
-              value: 0,
-              width: 1,
-              color: "#808080"
-            }
-          ]
-        },
-        tooltip: {
-          headerFormat: "<b>{series.name}</b><br/>",
-          pointFormat: "{point.x:%Y-%m-%d %H:%M:%S}<br/>{point.y:.2f}"
-        },
-        legend: {
-          //enabled: false
-          layout: "vertical",
-          align: "left",
-          verticalAlign: "top",
-          x: 120,
-          y: 70,
-          floating: true,
-          borderWidth: 1,
-          backgroundColor:
-            (Highcharts.theme && Highcharts.theme.legendBackgroundColor) ||
-            "#FFFFFF"
-        },
-        exporting: {
-          enabled: false
-        },
-        series: [
+        plotLines: [
           {
-            name: "사망률",
-            data: (function() {
-              var deathArr = [],
-                  time = new Date().getTime();
-              var length= <%=dataLen%>;
-              var i=-9; //얘는 시간계산용
-              var j=0; //얘는 반복문용
-              for(;j<10-length;j++)
-              {
-                deathArr.push({
-                 x: time + i * 60000,
-                 y: 0
-              }) 
+            value: 0,
+            width: 1,
+            color: "#808080"
+          }
+        ]
+      },
+      tooltip: {
+        headerFormat: "<b>{series.name}</b><br/>",
+        pointFormat: "{point.x:%Y-%m-%d %H:%M:%S}<br/>{point.y:.2f}"
+      },
+      legend: {
+        //enabled: false
+        layout: "vertical",
+        align: "left",
+        verticalAlign: "top",
+        x: 120,
+        y: 70,
+        floating: true,
+        borderWidth: 1,
+        backgroundColor:
+          (Highcharts.theme && Highcharts.theme.legendBackgroundColor) ||
+          "#FFFFFF"
+      },
+      exporting: {
+        enabled: false
+      },
+      series: [
+        {
+          name: "사망률",
+          data: (function () {
+            var deathArr = [],
+              time = new Date().getTime();
+            var length = <%=dataLen%>;
+            var i = -9; //얘는 시간계산용
+            var j = 0; //얘는 반복문용
+            for (; j < 10 - length; j++) {
+              deathArr.push({
+                x: time + i * 60000,
+                y: 0
+              })
               i++;
-              }
+            }
 
-              <%probArr.forEach((probArr)=>{%>
+              <% probArr.forEach((probArr) => {%>
                 var temp;
-                temp= <%=probArr%>;
-                
-                // for(;j<10;j++)
-                // {
-                //   deathArr.push({
-                //   x: time + i * 60000,
-                //   y: temp
-                // }) 
-                // i++;
-                // }
-                
-                deathArr.push({
+              temp = <%=probArr %>;
+
+              // for(;j<10;j++)
+              // {
+              //   deathArr.push({
+              //   x: time + i * 60000,
+              //   y: temp
+              // }) 
+              // i++;
+              // }
+
+              deathArr.push({
                 x: time + i * 60000,
                 y: temp
-                })
-                i++;
+              })
+              i++;
 
-              <%})%>
+              <%}) %>
 
               return deathArr;
-            })()
+          })()
+        }
+      ]
+    });
+
+    var chart2 = Highcharts.chart("container2", {
+      chart: {
+        type: "spline",
+        animation: Highcharts.svg, // don't animate in old IE
+        marginRight: 10,
+        events: {
+          load: function () {
+            // set up the updating of the chart each second
+            var series = this.series[0];
+            setInterval(function () {
+              var x = new Date().getTime(), // 현재 시간
+                y = 0; //
+              series.addPoint([x, y], true, true);
+            }, 60000); //1000=1초
+          }
+        }
+      },
+
+      time: {
+        useUTC: false
+      },
+
+      title: {
+        text: "기온"
+      },
+      xAxis: {
+        type: "datetime",
+        tickPixelInterval: 150
+      },
+      yAxis: {
+        title: {
+          text: "Value"
+        },
+        plotLines: [
+          {
+            value: 0,
+            width: 1,
+            color: "#808080"
           }
         ]
-      });
-    </script>
-
-    <!-- 두번째 그래프 -->
-    <script type="text/javascript">
-      Highcharts.chart("container2", {
-        chart: {
-          type: "spline",
-          animation: Highcharts.svg, // don't animate in old IE
-          marginRight: 10,
-          events: {
-            load: function() {
-              // set up the updating of the chart each second
-              var series = this.series[0];
-              setInterval(function() {
-                var x = new Date().getTime(), // 현재 시간
-                  y = 0; //
-                series.addPoint([x, y], true, true);
-              }, 60000); //1000=1초
-            }
-          }
-        },
-
-        time: {
-          useUTC: false
-        },
-
-        title: {
-          text: "기온"
-        },
-        xAxis: {
-          type: "datetime",
-          tickPixelInterval: 150
-        },
-        yAxis: {
-          title: {
-            text: "Value"
-          },
-          plotLines: [
-            {
-              value: 0,
-              width: 1,
-              color: "#808080"
-            }
-          ]
-        },
-        tooltip: {
-          headerFormat: "<b>{series.name}</b><br/>",
-          pointFormat: "{point.x:%Y-%m-%d %H:%M:%S}<br/>{point.y:.2f}"
-        },
-        legend: {
-          //enabled: false
-          layout: "vertical",
-          align: "left",
-          verticalAlign: "top",
-          x: 120,
-          y: 70,
-          floating: true,
-          borderWidth: 1,
-          backgroundColor:
-            (Highcharts.theme && Highcharts.theme.legendBackgroundColor) ||
-            "#FFFFFF"
-        },
-        exporting: {
-          enabled: false
-        },
-        series: [
-          {
-            name: "기온",
-            data: (function() {
-              var tempArr = [],
-                  time = new Date().getTime();
-              var length= <%=dataLen%>;
-              var i=-9;
-              var j=0;
-              for(j;j<10-length;j++)
-              {
-                tempArr.push({
-                 x: time + i * 60000,
-                 y: 0
-              }) 
+      },
+      tooltip: {
+        headerFormat: "<b>{series.name}</b><br/>",
+        pointFormat: "{point.x:%Y-%m-%d %H:%M:%S}<br/>{point.y:.2f}"
+      },
+      legend: {
+        //enabled: false
+        layout: "vertical",
+        align: "left",
+        verticalAlign: "top",
+        x: 120,
+        y: 70,
+        floating: true,
+        borderWidth: 1,
+        backgroundColor:
+          (Highcharts.theme && Highcharts.theme.legendBackgroundColor) ||
+          "#FFFFFF"
+      },
+      exporting: {
+        enabled: false
+      },
+      series: [
+        {
+          name: "기온",
+          data: (function () {
+            var tempArr = [],
+              time = new Date().getTime();
+            var length = <%=dataLen%>;
+            var i = -9;
+            var j = 0;
+            for (j; j < 10 - length; j++) {
+              tempArr.push({
+                x: time + i * 60000,
+                y: 0
+              })
               i++;
-              }
+            }
 
-              <%ptArr.forEach((ptArr)=>{%>
+              <% ptArr.forEach((ptArr) => {%>
                 var temp;
-                temp= <%=ptArr%>;
-                
-                // for(j;j<10;j++)
-                // {
-                //   tempArr.push({
-                //   x: time + i * 60000,
-                //   y: temp
-                // }) 
-                // i++;
-                // }
+              temp = <%=ptArr %>;
 
-                tempArr.push({
+              // for(j;j<10;j++)
+              // {
+              //   tempArr.push({
+              //   x: time + i * 60000,
+              //   y: temp
+              // }) 
+              // i++;
+              // }
+
+              tempArr.push({
                 x: time + i * 60000,
                 y: temp
-                })
-                i++;
+              })
+              i++;
 
-              <%})%>
+              <%}) %>
 
               return tempArr;
-            })()
+          })()
+        }
+      ]
+    });
+
+    var chart3 = Highcharts.chart("container3", {
+      chart: {
+        type: "spline",
+        animation: Highcharts.svg, // don't animate in old IE
+        marginRight: 10,
+        events: {
+          load: function () {
+            // set up the updating of the chart each second
+            var series = this.series[0];
+            setInterval(function () {
+              var x = new Date().getTime(), // 현재 시간
+                y = 0; //
+              series.addPoint([x, y], true, true);
+            }, 60000); //1000=1초
+          }
+        }
+      },
+
+      time: {
+        useUTC: false
+      },
+
+      title: {
+        text: "풍속"
+      },
+      xAxis: {
+        type: "datetime",
+        tickPixelInterval: 150
+      },
+      yAxis: {
+        title: {
+          text: "Value"
+        },
+        plotLines: [
+          {
+            value: 0,
+            width: 1,
+            color: "#808080"
           }
         ]
-      });
-    </script>
-
-    <!-- 세번째 그래프 -->
-    <script type="text/javascript">
-      Highcharts.chart("container3", {
-        chart: {
-          type: "spline",
-          animation: Highcharts.svg, // don't animate in old IE
-          marginRight: 10,
-          events: {
-            load: function() {
-              // set up the updating of the chart each second
-              var series = this.series[0];
-              setInterval(function() {
-                var x = new Date().getTime(), // 현재 시간
-                  y = 0; //
-                series.addPoint([x, y], true, true);
-              }, 60000); //1000=1초
-            }
-          }
-        },
-
-        time: {
-          useUTC: false
-        },
-
-        title: {
-          text: "풍속"
-        },
-        xAxis: {
-          type: "datetime",
-          tickPixelInterval: 150
-        },
-        yAxis: {
-          title: {
-            text: "Value"
-          },
-          plotLines: [
-            {
-              value: 0,
-              width: 1,
-              color: "#808080"
-            }
-          ]
-        },
-        tooltip: {
-          headerFormat: "<b>{series.name}</b><br/>",
-          pointFormat: "{point.x:%Y-%m-%d %H:%M:%S}<br/>{point.y:.2f}"
-        },
-        legend: {
-          //enabled: false
-          layout: "vertical",
-          align: "left",
-          verticalAlign: "top",
-          x: 120,
-          y: 70,
-          floating: true,
-          borderWidth: 1,
-          backgroundColor:
-            (Highcharts.theme && Highcharts.theme.legendBackgroundColor) ||
-            "#FFFFFF"
-        },
-        exporting: {
-          enabled: false
-        },
-        series: [
-          {
-            name: "풍속",
-            data: (function() {
-              var windArr = [],
-                  time = new Date().getTime();
-              var length= <%=dataLen%>;
-              var i=-9;
-              var j=0;
-              for(j;j<10-length;j++)
-              {
-                windArr.push({
-                 x: time + i * 60000,
-                 y: 0
-              }) 
+      },
+      tooltip: {
+        headerFormat: "<b>{series.name}</b><br/>",
+        pointFormat: "{point.x:%Y-%m-%d %H:%M:%S}<br/>{point.y:.2f}"
+      },
+      legend: {
+        //enabled: false
+        layout: "vertical",
+        align: "left",
+        verticalAlign: "top",
+        x: 120,
+        y: 70,
+        floating: true,
+        borderWidth: 1,
+        backgroundColor:
+          (Highcharts.theme && Highcharts.theme.legendBackgroundColor) ||
+          "#FFFFFF"
+      },
+      exporting: {
+        enabled: false
+      },
+      series: [
+        {
+          name: "풍속",
+          data: (function () {
+            var windArr = [],
+              time = new Date().getTime();
+            var length = <%=dataLen%>;
+            var i = -9;
+            var j = 0;
+            for (j; j < 10 - length; j++) {
+              windArr.push({
+                x: time + i * 60000,
+                y: 0
+              })
               i++;
-              }
+            }
 
-              <%wsArr.forEach((wsArr)=>{%>
+              <% wsArr.forEach((wsArr) => {%>
                 var temp;
-                temp= <%=wsArr%>;
-                
-                // for(j;j<10;j++)
-                // {
-                //   windArr.push({
-                //   x: time + i * 60000,
-                //   y: temp
-                // }) 
-                // i++;
-                // }
+              temp = <%=wsArr %>;
 
-                windArr.push({
+              // for(j;j<10;j++)
+              // {
+              //   windArr.push({
+              //   x: time + i * 60000,
+              //   y: temp
+              // }) 
+              // i++;
+              // }
+
+              windArr.push({
                 x: time + i * 60000,
                 y: temp
-                })
-                i++;
+              })
+              i++;
 
-              <%})%>
+              <%}) %>
 
               return windArr;
-            })()
+          })()
+        }
+      ]
+    });
+
+    var chart4 = Highcharts.chart("container4", {
+      chart: {
+        type: "spline",
+        animation: Highcharts.svg, // don't animate in old IE
+        marginRight: 10,
+        events: {
+          load: function () {
+            // set up the updating of the chart each second
+            var series = this.series[0];
+            setInterval(function () {
+              var x = new Date().getTime(), // 현재 시간
+                y = 0; //
+              series.addPoint([x, y], true, true);
+            }, 60000); //1000=1초
           }
-        ]      
-        });
-    </script>
+        }
+      },
 
-    <!-- 네번째 그래프 -->
-    <script type="text/javascript">
-      Highcharts.chart("container4", {
-        chart: {
-          type: "spline",
-          animation: Highcharts.svg, // don't animate in old IE
-          marginRight: 10,
-          events: {
-            load: function() {
-              // set up the updating of the chart each second
-              var series = this.series[0];
-              setInterval(function() {
-                var x = new Date().getTime(), // 현재 시간
-                  y = 0; //
-                series.addPoint([x, y], true, true);
-              }, 60000); //1000=1초
-            }
-          }
-        },
+      time: {
+        useUTC: false
+      },
 
-        time: {
-          useUTC: false
-        },
-
+      title: {
+        text: "강수량"
+      },
+      xAxis: {
+        type: "datetime",
+        tickPixelInterval: 150
+      },
+      yAxis: {
         title: {
-          text: "강수량"
+          text: "Value"
         },
-        xAxis: {
-          type: "datetime",
-          tickPixelInterval: 150
-        },
-        yAxis: {
-          title: {
-            text: "Value"
-          },
-          plotLines: [
-            {
-              value: 0,
-              width: 1,
-              color: "#808080"
-            }
-          ]
-        },
-        tooltip: {
-          headerFormat: "<b>{series.name}</b><br/>",
-          pointFormat: "{point.x:%Y-%m-%d %H:%M:%S}<br/>{point.y:.2f}"
-        },
-        legend: {
-          //enabled: false
-          layout: "vertical",
-          align: "left",
-          verticalAlign: "top",
-          x: 120,
-          y: 70,
-          floating: true,
-          borderWidth: 1,
-          backgroundColor:
-            (Highcharts.theme && Highcharts.theme.legendBackgroundColor) ||
-            "#FFFFFF"
-        },
-        exporting: {
-          enabled: false
-        },
-        series: [
+        plotLines: [
           {
-            name: "강수량",
-            data: (function() {
-              var rainArr = [],
-                  time = new Date().getTime();
-              var length= <%=dataLen%>;
-              var i=-9;
-              var j=0;
-              for(j;j<10-length;j++)
-              {
-                rainArr.push({
-                 x: time + i * 60000,
-                 y: 0
-              }) 
+            value: 0,
+            width: 1,
+            color: "#808080"
+          }
+        ]
+      },
+      tooltip: {
+        headerFormat: "<b>{series.name}</b><br/>",
+        pointFormat: "{point.x:%Y-%m-%d %H:%M:%S}<br/>{point.y:.2f}"
+      },
+      legend: {
+        //enabled: false
+        layout: "vertical",
+        align: "left",
+        verticalAlign: "top",
+        x: 120,
+        y: 70,
+        floating: true,
+        borderWidth: 1,
+        backgroundColor:
+          (Highcharts.theme && Highcharts.theme.legendBackgroundColor) ||
+          "#FFFFFF"
+      },
+      exporting: {
+        enabled: false
+      },
+      series: [
+        {
+          name: "강수량",
+          data: (function () {
+            var rainArr = [],
+              time = new Date().getTime();
+            var length = <%=dataLen%>;
+            var i = -9;
+            var j = 0;
+            for (j; j < 10 - length; j++) {
+              rainArr.push({
+                x: time + i * 60000,
+                y: 0
+              })
               i++;
-              }
+            }
 
-              <%rainArr.forEach((rainArr)=>{%>
+              <% rainArr.forEach((rainArr) => {%>
                 var temp;
-                temp= <%=rainArr%>;
-                
-                // for(j;j<10;j++)
-                // {
-                //   rainArr.push({
-                //   x: time + i * 60000,
-                //   y: temp
-                // }) 
-                // i++;
-                // }
+              temp = <%=rainArr %>;
 
-                rainArr.push({
+              // for(j;j<10;j++)
+              // {
+              //   rainArr.push({
+              //   x: time + i * 60000,
+              //   y: temp
+              // }) 
+              // i++;
+              // }
+
+              rainArr.push({
                 x: time + i * 60000,
                 y: temp
-                })
-                i++;
+              })
+              i++;
 
-              <%})%>
+              <%}) %>
 
               return rainArr;
-            })()
-          }
-        ]      
-      });
-    </script>
-  </body>
+          })()
+        }
+      ]
+    });
+  </script>
+</body>
+
 </html>
