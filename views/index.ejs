@@ -39,13 +39,30 @@
       
       var date = new Date().getTime();
 
-      chart1.series.data.push({
+      chart1.series[0].addPoint({
         x: date,
         y: info.death
       })
+
+      chart2.series[0].addPoint({
+        x: date,
+        y: info.temperature
+      })
+
+      chart3.series[0].addPoint({
+        x: date,
+        y: info.wind
+      })
+
+      chart4.series[0].addPoint({
+        x: date,
+        y: info.rain
+      })
+
     });
     </script>
     <script type="text/javascript">
+    //사망률
     var chart1 = Highcharts.chart("container1", {
       chart: {
         type: "areaspline",
@@ -150,23 +167,23 @@
         }
       ]
     });
-
+    //기온
     var chart2 = Highcharts.chart("container2", {
       chart: {
         type: "spline",
         animation: Highcharts.svg, // don't animate in old IE
         marginRight: 10,
-        events: {
-          load: function () {
-            // set up the updating of the chart each second
-            var series = this.series[0];
-            setInterval(function () {
-              var x = new Date().getTime(), // 현재 시간
-                y = 0; //
-              series.addPoint([x, y], true, true);
-            }, 60000); //1000=1초
-          }
-        }
+        // events: {
+        //   load: function () {
+        //     // set up the updating of the chart each second
+        //     var series = this.series[0];
+        //     setInterval(function () {
+        //       var x = new Date().getTime(), // 현재 시간
+        //         y = 0; //
+        //       series.addPoint([x, y], true, true);
+        //     }, 60000); //1000=1초
+        //   }
+        // }
       },
 
       time: {
@@ -255,23 +272,23 @@
         }
       ]
     });
-
+    //풍속
     var chart3 = Highcharts.chart("container3", {
       chart: {
         type: "spline",
         animation: Highcharts.svg, // don't animate in old IE
         marginRight: 10,
-        events: {
-          load: function () {
-            // set up the updating of the chart each second
-            var series = this.series[0];
-            setInterval(function () {
-              var x = new Date().getTime(), // 현재 시간
-                y = 0; //
-              series.addPoint([x, y], true, true);
-            }, 60000); //1000=1초
-          }
-        }
+        // events: {
+        //   load: function () {
+        //     // set up the updating of the chart each second
+        //     var series = this.series[0];
+        //     setInterval(function () {
+        //       var x = new Date().getTime(), // 현재 시간
+        //         y = 0; //
+        //       series.addPoint([x, y], true, true);
+        //     }, 60000); //1000=1초
+        //   }
+        // }
       },
 
       time: {
@@ -360,23 +377,23 @@
         }
       ]
     });
-
+    //강수량 
     var chart4 = Highcharts.chart("container4", {
       chart: {
         type: "spline",
         animation: Highcharts.svg, // don't animate in old IE
         marginRight: 10,
-        events: {
-          load: function () {
-            // set up the updating of the chart each second
-            var series = this.series[0];
-            setInterval(function () {
-              var x = new Date().getTime(), // 현재 시간
-                y = 0; //
-              series.addPoint([x, y], true, true);
-            }, 60000); //1000=1초
-          }
-        }
+        // events: {
+        //   load: function () {
+        //     // set up the updating of the chart each second
+        //     var series = this.series[0];
+        //     setInterval(function () {
+        //       var x = new Date().getTime(), // 현재 시간
+        //         y = 0; //
+        //       series.addPoint([x, y], true, true);
+        //     }, 60000); //1000=1초
+        //   }
+        // }
       },
 
       time: {
