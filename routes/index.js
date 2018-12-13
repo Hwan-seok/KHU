@@ -39,7 +39,6 @@ router.get('/name/:name/birth/:birth', (req,res) => {
       {
         for(var i = rows.length - 1; i >= 0; i--)
         {
-          console.log('kk');
           probArr.unshift(rows[i].prob);
           time.unshift(rows[i].time);
           ptArr.unshift(rows[i].temperature);
