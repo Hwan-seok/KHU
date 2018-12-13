@@ -109,7 +109,7 @@
       },
       yAxis: {
         title: {
-          text: "Value",
+          text: "사망확률(%)",
           style: {
             color: "white"
           }
@@ -251,7 +251,7 @@ plotOptions: {
       },
       yAxis: {
         title: {
-          text: "Value",
+          text: "기온(°C)",
           style: {
             color: "white"
           }
@@ -272,7 +272,7 @@ plotOptions: {
       },
       tooltip: {
         headerFormat: "<b>{series.name}</b><br/>",
-        pointFormat: "{point.x:%Y년%m월%d일 %H시%M분}<br/>의 기온 : {point.y:.2f}도"
+        pointFormat: "{point.x:%Y년%m월%d일 %H시%M분}<br/>의 기온 : {point.y:.2f}°C"
       },
       legend: {
         //enabled: false
@@ -379,7 +379,7 @@ plotOptions: {
       },
       yAxis: {
         title: {
-          text: "Value",
+          text: "풍속(m/s)",
           style: {
             color: "white"
           }
@@ -506,7 +506,7 @@ plotOptions: {
       },
       yAxis: {
         title: {
-          text: "Value",
+          text: "강수량(mm)",
           style: {
             color: "white"
           }
@@ -602,26 +602,26 @@ plotOptions: {
 
       chart1.series[0].addPoint({
         x: date,
-        y: info.death
+        y: info.death,
+        color:"#FFE08C"
       });
-console.log(chart1.series[0])
       chart2.series[0].addPoint({
         x: date,
-        y: info.temperature*1
+        y: info.temperature*1,
+        color:"#FFE08C"
       });
 
-console.log(chart2.series[0])
       chart3.series[0].addPoint({
         x: date,
-        y: info.wind*1
+        y: info.wind*1,
+        color:"#FFE08C"
       });
 
-console.log(chart3.series[0])
       chart4.series[0].addPoint({
         x: date,
-        y: info.rain*1
+        y: info.rain*1,
+        color:"#FFE08C"
       });
-console.log(chart4.series[0])
 
     });
 
@@ -630,4 +630,4 @@ console.log(chart4.series[0])
 
 </body>
 
-</html> -->
+</html>
