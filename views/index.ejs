@@ -2,11 +2,23 @@
 <html>
 
 <head>
+  <!-- font -->
+  <link href="https://fonts.googleapis.com/css?family=Nanum+Brush+Script&amp;subset=korean" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css?family=Yeon+Sung&amp;subset=korean" rel="stylesheet" />
+
   <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Highcharts Example</title>
 
-  <style type="text/css"></style>
+  <style type="text/css">
+    body {
+      /* background: linear-gradient( to bottom, #65799B, rgb(38, 14, 41) ); */
+      /* background-color:#65799B; */
+      background-image: url("2.jpg");
+      background-repeat: no-repeat;
+      background-size: cover;
+    }
+  </style>
 </head>
 
 <body>
@@ -32,40 +44,49 @@
 
   <script src="/socket.io/socket.io.js"></script>
   <script>
+       let client_data={
+     birth : "<%=birth%>",
+     name : "<%=name%>"
+   }
     var socket = io.connect('/', { transports: ['websocket'], upgrade: false });
-    socket.emit("connection", "client in");
+    socket.emit("connection",client_data);
     socket.on("weatherInfo_minutely_send_to_client", (info) => {  //서버에서 client에게 메세지 전송
       console.log(info);
-      
+
       var date = new Date().getTime();
 
       chart1.series[0].addPoint({
         x: date,
-        y: info.death
+        y: info.death,
+        color: "#FFE08C"
       })
 
       chart2.series[0].addPoint({
         x: date,
-        y: info.temperature
+        y: info.temperature,
+        color: "#FFE08C"
       })
 
       chart3.series[0].addPoint({
         x: date,
-        y: info.wind
+        y: info.wind,
+        color: "#FFE08C"
       })
 
       chart4.series[0].addPoint({
         x: date,
-        y: info.rain
+        y: info.rain,
+        color: "#FFE08C"
       })
 
     });
-    </script>
-    <script type="text/javascript">
+  </script>
+
+  <script type="text/javascript">
     //사망률
     var chart1 = Highcharts.chart("container1", {
       chart: {
-        type: "areaspline",
+        type: "spline",
         animation: Highcharts.svg, // don't animate in old IE
         marginRight: 10,
         // events: {
@@ -86,19 +107,31 @@
       },
 
       title: {
-        text: "<%=name%>님의 실시간 사망률"
+        text: "<%=name%>님의 실시간 사망률",
+        style: {
+          color: "#FFFFFF",
+          fontWeight: "bold",
+          fontFamily: 'Yeon Sung',
+          fontSize: '32px'
+        }
+
       },
       xAxis: {
         type: "datetime",
-        tickPixelInterval: 150
+        tickPixelInterval: 150,
+        labels: {
+          style: {
+            color: "white"
+          }
+        }
+
       },
       yAxis: {
         title: {
-          text: "사망률(%)"
-        },
-        xAxis: {
-          type: "datetime",
-          tickPixelInterval: 150
+          text: "Value",
+          style: {
+            color: "white"
+          }
         },
         plotLines: [
           {
@@ -106,19 +139,24 @@
             width: 1,
             color: "#808080"
           }
-        ]
+        ],
+        labels: {
+          style: {
+            color: "white"
+          }
+        }
       },
       tooltip: {
         headerFormat: "<b>{series.name}</b><br/>",
-        pointFormat: "{point.x:%Y-%m-%d %H:%M:%S}<br/>{point.y:.2f}"
+        pointFormat: "{point.x:%Y년%m월%d일 %H시%M분}<br/>의 사망률 : {point.y:.2f}%"
       },
       legend: {
         //enabled: false
         layout: "vertical",
         align: "left",
         verticalAlign: "top",
-        x: 120,
-        y: 70,
+        x: 100,
+        y: 50,
         floating: true,
         borderWidth: 1,
         backgroundColor:
@@ -128,6 +166,16 @@
       exporting: {
         enabled: false
       },
+
+      plotOptions: {
+        series: {
+          marker: {
+            radius: 6
+          }
+        }
+      },
+
+
       series: [
         {
           name: "사망률",
@@ -167,7 +215,9 @@
               <%}) %>
 
               return deathArr;
-          })()
+          })(),
+
+          color: "#FFFFFF"
         }
       ]
     });
@@ -188,6 +238,8 @@
         //     }, 60000); //1000=1초
         //   }
         // }
+        backgroundColor: "rgba(255, 255, 255, 0.0)"
+
       },
 
       time: {
@@ -195,15 +247,30 @@
       },
 
       title: {
-        text: "기온"
+        text: "기온",
+        style: {
+          color: "#FFFFFF",
+          fontWeight: "bold",
+          fontFamily: 'Yeon Sung',
+          fontSize: '25px'
+        }
+
       },
       xAxis: {
         type: "datetime",
-        tickPixelInterval: 150
+        tickPixelInterval: 150,
+        labels: {
+          style: {
+            color: "white"
+          }
+        }
       },
       yAxis: {
         title: {
-          text: "Value"
+          text: "Value",
+          style: {
+            color: "white"
+          }
         },
         plotLines: [
           {
@@ -211,19 +278,24 @@
             width: 1,
             color: "#808080"
           }
-        ]
+        ],
+        labels: {
+          style: {
+            color: "white"
+          }
+        }
       },
       tooltip: {
         headerFormat: "<b>{series.name}</b><br/>",
-        pointFormat: "{point.x:%Y-%m-%d %H:%M:%S}<br/>{point.y:.2f}"
+        pointFormat: "{point.x:%Y년%m월%d일 %H시%M분}<br/>의 사망률 : {point.y:.2f}%"
       },
       legend: {
         //enabled: false
         layout: "vertical",
         align: "left",
         verticalAlign: "top",
-        x: 120,
-        y: 70,
+        x: 100,
+        y: 50,
         floating: true,
         borderWidth: 1,
         backgroundColor:
@@ -272,7 +344,9 @@
               <%}) %>
 
               return tempArr;
-          })()
+          })(),
+
+          color: "#FFE08C"
         }
       ]
     });
@@ -293,6 +367,8 @@
         //     }, 60000); //1000=1초
         //   }
         // }
+        backgroundColor: "rgba(255, 255, 255, 0.0)"
+
       },
 
       time: {
@@ -300,15 +376,32 @@
       },
 
       title: {
-        text: "풍속"
+        text: "풍속",
+        style: {
+          color: "#FFFFFF",
+          fontWeight: "bold",
+          fontFamily: 'Yeon Sung',
+          fontSize: '25px'
+        }
+
       },
       xAxis: {
         type: "datetime",
-        tickPixelInterval: 150
+        tickPixelInterval: 150,
+        labels: {
+          style: {
+            color: "white"
+          }
+        }
+
       },
       yAxis: {
         title: {
-          text: "Value"
+          text: "Value",
+          style: {
+            color: "white"
+          }
+
         },
         plotLines: [
           {
@@ -316,19 +409,25 @@
             width: 1,
             color: "#808080"
           }
-        ]
+        ],
+        labels: {
+          style: {
+            color: "white"
+          }
+        }
+
       },
       tooltip: {
         headerFormat: "<b>{series.name}</b><br/>",
-        pointFormat: "{point.x:%Y-%m-%d %H:%M:%S}<br/>{point.y:.2f}"
+        pointFormat: "{point.x:%Y년%m월%d일 %H시%M분}<br/>의 사망률 : {point.y:.2f}%"
       },
       legend: {
         //enabled: false
         layout: "vertical",
         align: "left",
         verticalAlign: "top",
-        x: 120,
-        y: 70,
+        x: 100,
+        y: 50,
         floating: true,
         borderWidth: 1,
         backgroundColor:
@@ -377,7 +476,9 @@
               <%}) %>
 
               return windArr;
-          })()
+          })(),
+
+          color: "#FFE08C"
         }
       ]
     });
@@ -398,6 +499,8 @@
         //     }, 60000); //1000=1초
         //   }
         // }
+        backgroundColor: "rgba(255, 255, 255, 0.0)"
+
       },
 
       time: {
@@ -405,15 +508,32 @@
       },
 
       title: {
-        text: "강수량"
+        text: "강수량",
+        style: {
+          color: "#FFFFFF",
+          fontWeight: "bold",
+          fontFamily: 'Yeon Sung',
+          fontSize: '25px'
+        }
+
       },
       xAxis: {
         type: "datetime",
-        tickPixelInterval: 150
+        tickPixelInterval: 150,
+        labels: {
+          style: {
+            color: "white"
+          }
+        }
+
       },
       yAxis: {
         title: {
-          text: "Value"
+          text: "Value",
+          style: {
+            color: "white"
+          }
+
         },
         plotLines: [
           {
@@ -421,19 +541,25 @@
             width: 1,
             color: "#808080"
           }
-        ]
+        ],
+        labels: {
+          style: {
+            color: "white"
+          }
+        }
+
       },
       tooltip: {
         headerFormat: "<b>{series.name}</b><br/>",
-        pointFormat: "{point.x:%Y-%m-%d %H:%M:%S}<br/>{point.y:.2f}"
+        pointFormat: "{point.x:%Y년%m월%d일 %H시%M분}<br/>의 사망률 : {point.y:.2f}%"
       },
       legend: {
         //enabled: false
         layout: "vertical",
         align: "left",
         verticalAlign: "top",
-        x: 120,
-        y: 70,
+        x: 100,
+        y: 50,
         floating: true,
         borderWidth: 1,
         backgroundColor:
@@ -482,7 +608,9 @@
               <%}) %>
 
               return rainArr;
-          })()
+          })(),
+          color: "#FFE08C"
+
         }
       ]
     });
