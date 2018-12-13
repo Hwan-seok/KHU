@@ -1,0 +1,641 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <!-- font -->
+  <link href="https://fonts.googleapis.com/css?family=Nanum+Brush+Script&amp;subset=korean" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css?family=Yeon+Sung&amp;subset=korean" rel="stylesheet" />
+
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Highcharts Example</title>
+
+  <style type="text/css">
+  html {
+  margin: 0;
+  padding: 0;
+}
+    body {
+      margin: 0;
+  padding: 0;
+
+      /* background: linear-gradient( to bottom, #65799B, rgb(38, 14, 41) ); */
+      /* background-color:#65799B; */
+      /* background-image: url("2.jpg");
+      background-repeat: no-repeat;
+      background-size: cover; */
+    }
+
+    #banner {
+      position: absolute;
+      top: 0;
+      width: 100%;
+    }
+  </style>
+</head>
+
+<body>
+  <script src="highcharts.js"></script>
+  <script src="modules/exporting.js"></script>
+  <script src="modules/export-data.js"></script>
+  <img src="images/background.jpg" alt="" style="z-index:-1; min-width: 100%; min-height: 100%">
+
+  <div id="banner">
+    <div id="container1" style="width:1260px; height: 400px; margin: 0 auto"></div>
+
+    <div style="width:1275px;  margin:0 auto;">
+      <div style="display: inline-block;">
+        <div id="container2" style="width:400px; height: 300px; padding:0; margin-left:0px;margin-right: 30px;"></div>
+      </div>
+      <div style="display: inline-block;">
+        <div id="container3" style="width:400px; height: 300px; padding:0; margin-left:0px;margin-right: 30px;"></div>
+      </div>
+
+      <div style="display: inline-block;">
+        <div id="container4" style="width:400px; height: 300px; padding:0; margin-left:0px;"></div>
+      </div>
+    </div>
+
+
+    <script src="/socket.io/socket.io.js"></script>
+    <script>
+      let client_data = {
+        birth: "<%=birth%>",
+        name: "<%=name%>"
+      }
+      var socket = io.connect('/', { transports: ['websocket'], upgrade: false });
+      socket.emit("connection", client_data);
+      socket.on("weatherInfo_minutely_send_to_client", (info) => {  //서버에서 client에게 메세지 전송
+        console.log(info);
+
+        var date = new Date().getTime();
+
+        chart1.series[0].addPoint({
+          x: date,
+          y: info.death,
+          color: "#FFE08C"
+        });
+
+        chart2.series[0]  .addPoint({
+          x: date,
+          y: info.temperature,
+          color: "#FFE08C"
+        });
+
+        chart3.series[0].addPoint({
+          x: date,
+          y: info.wind,
+          color: "#FFE08C"
+        });
+
+        chart4.series[0].addPoint({
+          x: date,
+          y: info.rain,
+          color: "#FFE08C"
+        });
+
+      });
+    </script>
+
+    <script type="text/javascript">
+      //사망률
+      var chart1 = Highcharts.chart("container1", {
+        chart: {
+          type: "spline",
+          animation: Highcharts.svg, // don't animate in old IE
+          marginRight: 10,
+          // events: {
+          //   load: function () {
+          //     // set up the updating of the chart each second
+          //     var series = this.series[0];
+          //     setInterval(function () {
+          //       var x = new Date().getTime(), // 현재 시간
+          //         y = 0; //여기에 새로 넣을 값
+          //       series.addPoint([x, y], true, true);
+          //     }, 60000); //1000=1초 -> 1분=60000
+          //   }
+          // }
+          backgroundColor: "rgba(255, 255, 255, 0.0)"
+
+        },
+
+        time: {
+          useUTC: false
+        },
+
+        title: {
+          text: "<%=name%>님의 실시간 사망 확률",
+          style: {
+            color: "#FFFFFF",
+            fontWeight: "bold",
+            fontFamily: 'Yeon Sung',
+            fontSize: '32px'
+          }
+
+        },
+        xAxis: {
+          type: "datetime",
+          tickPixelInterval: 150,
+          labels: {
+            style: {
+              color: "white"
+            }
+          }
+
+        },
+        yAxis: {
+          title: {
+            text: "Value",
+            style: {
+              color: "white"
+            }
+          },
+          plotLines: [
+            {
+              value: 0,
+              width: 1,
+              color: "#808080"
+            }
+          ],
+          labels: {
+            style: {
+              color: "white"
+            }
+          }
+        },
+        tooltip: {
+          headerFormat: "<b>{series.name}</b><br/>",
+          pointFormat: "{point.x:%Y년%m월%d일 %H시%M분}<br/>의 사망률 : {point.y:.2f}%"
+        },
+        legend: {
+          //enabled: false
+          layout: "vertical",
+          align: "left",
+          verticalAlign: "top",
+          x: 100,
+          y: 50,
+          floating: true,
+          borderWidth: 1,
+          backgroundColor:
+            (Highcharts.theme && Highcharts.theme.legendBackgroundColor) ||
+            "#FFFFFF"
+        },
+        exporting: {
+          enabled: false
+        },
+
+        plotOptions: {
+          series: {
+            marker: {
+              radius: 6
+            }
+          }
+        },
+
+
+        series: [
+          {
+            name: "사망률",
+            data: (function () {
+              var deathArr = [],
+                time = new Date().getTime();
+              var length = <%=dataLen%>;
+              var i = -9; //얘는 시간계산용
+              var j = 0; //얘는 반복문용
+              for (; j < 10 - length; j++) {
+                deathArr.push({
+                  x: time + i * 60000,
+                  y: 0
+                })
+                i++;
+              }
+
+              <% probArr.forEach((probArr) => {%>
+                var temp;
+                temp = <%=probArr %>;
+
+                // for(;j<10;j++)
+                // {
+                //   deathArr.push({
+                //   x: time + i * 60000,
+                //   y: temp
+                // }) 
+                // i++;
+                // }
+
+                deathArr.push({
+                  x: time + i * 60000,
+                  y: temp
+                })
+                i++;
+
+              <%}) %>
+
+              return deathArr;
+            })(),
+
+            color: "#FFFFFF"
+          }
+        ]
+      });
+      //기온
+      var chart2 = Highcharts.chart("container2", {
+        chart: {
+          type: "spline",
+          animation: Highcharts.svg, // don't animate in old IE
+          marginRight: 10,
+          // events: {
+          //   load: function () {
+          //     // set up the updating of the chart each second
+          //     var series = this.series[0];
+          //     setInterval(function () {
+          //       var x = new Date().getTime(), // 현재 시간
+          //         y = 0; //
+          //       series.addPoint([x, y], true, true);
+          //     }, 60000); //1000=1초
+          //   }
+          // }
+          backgroundColor: "rgba(255, 255, 255, 0.0)"
+
+        },
+
+        time: {
+          useUTC: false
+        },
+
+        title: {
+          text: "기온",
+          style: {
+            color: "#FFFFFF",
+            fontWeight: "bold",
+            fontFamily: 'Yeon Sung',
+            fontSize: '25px'
+          }
+
+        },
+        xAxis: {
+          type: "datetime",
+          tickPixelInterval: 150,
+          labels: {
+            style: {
+              color: "white"
+            }
+          }
+        },
+        yAxis: {
+          title: {
+            text: "Value",
+            style: {
+              color: "white"
+            }
+          },
+          plotLines: [
+            {
+              value: 0,
+              width: 1,
+              color: "#808080"
+            }
+          ],
+          labels: {
+            style: {
+              color: "white"
+            }
+          }
+        },
+        tooltip: {
+          headerFormat: "<b>{series.name}</b><br/>",
+          pointFormat: "{point.x:%Y년%m월%d일 %H시%M분}<br/>의 사망률 : {point.y:.2f}%"
+        },
+        legend: {
+          //enabled: false
+          layout: "vertical",
+          align: "left",
+          verticalAlign: "top",
+          x: 100,
+          y: 50,
+          floating: true,
+          borderWidth: 1,
+          backgroundColor:
+            (Highcharts.theme && Highcharts.theme.legendBackgroundColor) ||
+            "#FFFFFF"
+        },
+        exporting: {
+          enabled: false
+        },
+        series: [
+          {
+            name: "기온",
+            data: (function () {
+              var tempArr = [],
+                time = new Date().getTime();
+              var length = <%=dataLen%>;
+              var i = -9;
+              var j = 0;
+              for (j; j < 10 - length; j++) {
+                tempArr.push({
+                  x: time + i * 60000,
+                  y: 0
+                })
+                i++;
+              }
+
+              <% ptArr.forEach((ptArr) => {%>
+                var temp;
+                temp = <%=ptArr %>;
+
+                // for(j;j<10;j++)
+                // {
+                //   tempArr.push({
+                //   x: time + i * 60000,
+                //   y: temp
+                // }) 
+                // i++;
+                // }
+
+                tempArr.push({
+                  x: time + i * 60000,
+                  y: temp
+                })
+                i++;
+
+              <%}) %>
+
+              return tempArr;
+            })(),
+
+            color: "#FFE08C"
+          }
+        ]
+      });
+      //풍속
+      var chart3 = Highcharts.chart("container3", {
+        chart: {
+          type: "spline",
+          animation: Highcharts.svg, // don't animate in old IE
+          marginRight: 10,
+          // events: {
+          //   load: function () {
+          //     // set up the updating of the chart each second
+          //     var series = this.series[0];
+          //     setInterval(function () {
+          //       var x = new Date().getTime(), // 현재 시간
+          //         y = 0; //
+          //       series.addPoint([x, y], true, true);
+          //     }, 60000); //1000=1초
+          //   }
+          // }
+          backgroundColor: "rgba(255, 255, 255, 0.0)"
+
+        },
+
+        time: {
+          useUTC: false
+        },
+
+        title: {
+          text: "풍속",
+          style: {
+            color: "#FFFFFF",
+            fontWeight: "bold",
+            fontFamily: 'Yeon Sung',
+            fontSize: '25px'
+          }
+
+        },
+        xAxis: {
+          type: "datetime",
+          tickPixelInterval: 150,
+          labels: {
+            style: {
+              color: "white"
+            }
+          }
+
+        },
+        yAxis: {
+          title: {
+            text: "Value",
+            style: {
+              color: "white"
+            }
+
+          },
+          plotLines: [
+            {
+              value: 0,
+              width: 1,
+              color: "#808080"
+            }
+          ],
+          labels: {
+            style: {
+              color: "white"
+            }
+          }
+
+        },
+        tooltip: {
+          headerFormat: "<b>{series.name}</b><br/>",
+          pointFormat: "{point.x:%Y년%m월%d일 %H시%M분}<br/>의 사망률 : {point.y:.2f}%"
+        },
+        legend: {
+          //enabled: false
+          layout: "vertical",
+          align: "left",
+          verticalAlign: "top",
+          x: 100,
+          y: 50,
+          floating: true,
+          borderWidth: 1,
+          backgroundColor:
+            (Highcharts.theme && Highcharts.theme.legendBackgroundColor) ||
+            "#FFFFFF"
+        },
+        exporting: {
+          enabled: false
+        },
+        series: [
+          {
+            name: "풍속",
+            data: (function () {
+              var windArr = [],
+                time = new Date().getTime();
+              var length = <%=dataLen%>;
+              var i = -9;
+              var j = 0;
+              for (j; j < 10 - length; j++) {
+                windArr.push({
+                  x: time + i * 60000,
+                  y: 0
+                })
+                i++;
+              }
+
+              <% wsArr.forEach((wsArr) => {%>
+                var temp;
+                temp = <%=wsArr %>;
+
+                // for(j;j<10;j++)
+                // {
+                //   windArr.push({
+                //   x: time + i * 60000,
+                //   y: temp
+                // }) 
+                // i++;
+                // }
+
+                windArr.push({
+                  x: time + i * 60000,
+                  y: temp
+                })
+                i++;
+
+              <%}) %>
+
+              return windArr;
+            })(),
+
+            color: "#FFE08C"
+          }
+        ]
+      });
+      //강수량 
+      var chart4 = Highcharts.chart("container4", {
+        chart: {
+          type: "spline",
+          animation: Highcharts.svg, // don't animate in old IE
+          marginRight: 10,
+          // events: {
+          //   load: function () {
+          //     // set up the updating of the chart each second
+          //     var series = this.series[0];
+          //     setInterval(function () {
+          //       var x = new Date().getTime(), // 현재 시간
+          //         y = 0; //
+          //       series.addPoint([x, y], true, true);
+          //     }, 60000); //1000=1초
+          //   }
+          // }
+          backgroundColor: "rgba(255, 255, 255, 0.0)"
+
+        },
+
+        time: {
+          useUTC: false
+        },
+
+        title: {
+          text: "강수량",
+          style: {
+            color: "#FFFFFF",
+            fontWeight: "bold",
+            fontFamily: 'Yeon Sung',
+            fontSize: '25px'
+          }
+
+        },
+        xAxis: {
+          type: "datetime",
+          tickPixelInterval: 150,
+          labels: {
+            style: {
+              color: "white"
+            }
+          }
+
+        },
+        yAxis: {
+          title: {
+            text: "Value",
+            style: {
+              color: "white"
+            }
+
+          },
+          plotLines: [
+            {
+              value: 0,
+              width: 1,
+              color: "#808080"
+            }
+          ],
+          labels: {
+            style: {
+              color: "white"
+            }
+          }
+
+        },
+        tooltip: {
+          headerFormat: "<b>{series.name}</b><br/>",
+          pointFormat: "{point.x:%Y년%m월%d일 %H시%M분}<br/>의 사망률 : {point.y:.2f}%"
+        },
+        legend: {
+          //enabled: false
+          layout: "vertical",
+          align: "left",
+          verticalAlign: "top",
+          x: 100,
+          y: 50,
+          floating: true,
+          borderWidth: 1,
+          backgroundColor:
+            (Highcharts.theme && Highcharts.theme.legendBackgroundColor) ||
+            "#FFFFFF"
+        },
+        exporting: {
+          enabled: false
+        },
+        series: [
+          {
+            name: "강수량",
+            data: (function () {
+              var rainArr = [],
+                time = new Date().getTime();
+              var length = <%=dataLen%>;
+              var i = -9;
+              var j = 0;
+              for (j; j < 10 - length; j++) {
+                rainArr.push({
+                  x: time + i * 60000,
+                  y: 0
+                })
+                i++;
+              }
+
+              <% rainArr.forEach((rainArr) => {%>
+                var temp;
+                temp = <%=rainArr %>;
+
+                // for(j;j<10;j++)
+                // {
+                //   rainArr.push({
+                //   x: time + i * 60000,
+                //   y: temp
+                // }) 
+                // i++;
+                // }
+
+                rainArr.push({
+                  x: time + i * 60000,
+                  y: temp
+              
+                })
+                i++;
+
+              <%}) %>
+
+              return rainArr;
+            })(),
+            color: "#FFE08C"
+
+          }
+        ]
+      });
+    </script>
+
+  </div>
+
+</body>
+
+</html>

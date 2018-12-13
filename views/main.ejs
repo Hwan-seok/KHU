@@ -6,9 +6,9 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <title>Page Title</title>
 
-<!-- font -->
-<link href="https://fonts.googleapis.com/css?family=Nanum+Brush+Script&amp;subset=korean" rel="stylesheet">
-<link href="https://fonts.googleapis.com/css?family=Yeon+Sung&amp;subset=korean" rel="stylesheet">
+    <!-- font -->
+    <link href="https://fonts.googleapis.com/css?family=Nanum+Brush+Script&amp;subset=korean" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Yeon+Sung&amp;subset=korean" rel="stylesheet">
 
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" type="text/css" media="screen" href="main.css" />
@@ -24,10 +24,19 @@
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js"></script>
 
     <style type="text/css">
+        html,
+            {
+            margin: 0;
+            padding: 0;
+        }
+
         body {
-            background-image: url('images/background.jpg');
+            margin: 0;
+            padding: 0;
+
+            /* background-image: url('background.jpg');
             background-repeat: no-repeat;
-            background-size: cover;
+            background-size: cover; */
             /* background: linear-gradient( to bottom, #fbc2eb, #a6c1ee ); */
         }
 
@@ -41,6 +50,13 @@
             font-size: 20px;
             font-family: 'Yeon Sung', cursive;
         }
+
+        #banner {
+            position: absolute;
+            top: 0;
+            width: 100%;
+        }
+
         #footer {
             position: absolute;
             bottom: 0;
@@ -48,29 +64,33 @@
             height: 50px;
             text-align: center;
             font-family: 'Yeon Sung', cursive;
-            color:white;
+            color: white;
         }
     </style>
 
 </head>
 
 <body>
-    <div style="width:100%; text-align: center; margin-top:170px;">
-        <h1 style="font-size:90px;">당신이 지금 죽을 확률은?</h1>
-    </div>
-    <br><br><br>
-    <div style="width:100%; text-align: center;">
-        <form action="/starting" method="post">
-            <div class="form-inline">
-                <label>이름</label>
-                <input type="text" name="name" class="form-control" placeholder="김철수" style="width:200px;">
-                &nbsp&nbsp&nbsp&nbsp
-                <label>생년월일</label>
-                <input type="text" name="birth" class="form-control" placeholder="971009" style="width:200px;">
-                <br><br><br>
-                <input type="submit" value="시작하기" class="btn btn-default" style="font-family: 'Yeon Sung', cursive; width:100px;font-weight: bold; font-size: 18px; background-color: white;">
-            </div>
-        </form>
+    <img src="images/background.jpg" alt="" style="z-index:-1; min-width: 100%; min-height: 100%">
+    <div id="banner">
+        <div style="width:100%; text-align: center; padding-top:170px;">
+            <h1 style="font-size:90px;">당신이 지금 죽을 확률은?</h1>
+        </div>
+        <br><br><br>
+        <div style="width:100%; text-align: center;">
+            <form action="/starting" method="post">
+                <div class="form-inline">
+                    <label>이름</label>
+                    <input type="text" name="name" class="form-control" placeholder="김철수" style="width:200px;">
+                    &nbsp &nbsp&nbsp&nbsp
+                    <label>생년월일</label>
+                    <input type="text" name="birth" class="form-control" placeholder="971009" style="width:200px;">
+                    <br><br><br>
+                    <input type="submit" value="시작하기" class="btn btn-default" style="font-family: 'Yeon Sung', cursive; width:100px;font-weight: bold; font-size: 18px; background-color: white;">
+                </div>
+            </form>
+        </div>
+
     </div>
 
     <div id="footer">오픈소스SW개발 조민지 강환석 배희수</div>

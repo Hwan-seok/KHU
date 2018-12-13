@@ -39,8 +39,6 @@
   <script src="modules/exporting.js"></script>
   <script src="modules/export-data.js"></script>
 
-  <img src="images/background.jpg" alt="" style="z-index:-1; min-width: 100%; min-height: 100%">
-
   <div id="banner">
         <div id="container1" style="width:1260px; height: 400px; margin: 0 auto;"></div>
 
@@ -63,7 +61,35 @@
       birth: "<%=birth%>",
       name: "<%=name%>"
     }
-    
+    var socket = io.connect('/', { transports: ['websocket'], upgrade: false });
+    socket.emit("connection", client_data);
+    socket.on("weatherInfo_minutely_send_to_client", (info) => {  //서버에서 client에게 메세지 전송
+      console.log(info);
+
+      var date = new Date().getTime();
+
+      chart1.series[0].addPoint({
+        x: date,
+        y: info.death
+      });
+
+      chart2.series[0].addPoint({
+        x: date,
+        y: info.temperature
+      });
+
+      chart3.series[0].addPoint({
+        x: date,
+        y: info.wind
+      });
+
+      chart4.series[0].addPoint({
+        x: date,
+        y: info.rain
+      });
+
+    });
+
 
     var chart1 = Highcharts.chart("container1", {
       chart: {
@@ -593,38 +619,6 @@ plotOptions: {
 
 
     });
-    var socket = io.connect('/', { transports: ['websocket'], upgrade: false });
-    socket.emit("connection", client_data);
-    socket.on("weatherInfo_minutely_send_to_client", (info) => {  //서버에서 client에게 메세지 전송
-      console.log(info);
-
-        var date = new Date().getTime();
-
-      chart1.series[0].addPoint({
-        x: date,
-        y: info.death
-      });
-console.log(chart1.series[0])
-      chart2.series[0].addPoint({
-        x: date,
-        y: info.temperature*1
-      });
-
-console.log(chart2.series[0])
-      chart3.series[0].addPoint({
-        x: date,
-        y: info.wind*1
-      });
-
-console.log(chart3.series[0])
-      chart4.series[0].addPoint({
-        x: date,
-        y: info.rain*1
-      });
-console.log(chart4.series[0])
-
-    });
-
   </script>
   </div>
 
