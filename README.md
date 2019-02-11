@@ -1,3 +1,3 @@
-graph > areaspline > index.html
+당신이 지금 죽을 확률은?
 
 http://52.79.234.167
